@@ -37,7 +37,11 @@ const GridExample = () => {
   return (
     // wrapping container with theme & size
     <div className="ag-theme-quartz" style={{ height: 500 }}>
-      <AgGridReact rowData={rowData} columnDefs={colDefs} />
+      <AgGridReact
+        rowData={rowData}
+        columnDefs={colDefs}
+        reactiveCustomComponents
+      />
     </div>
   );
 };
