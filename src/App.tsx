@@ -4,18 +4,20 @@ import { AgGridReact } from "ag-grid-react"; // AG Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
+import { ICar } from "./interface";
 import PriceCellRenderer from "./CellRenderers/PriceCellRenderer";
 import PriceCellEditor from "./CellEditors/PriceCellEditor";
-
-interface ICar {
-  make: string;
-  model: string;
-  price: number;
-  electric: boolean;
-}
+import SelectCellEditor from "./CellEditors/SelectCellEditor";
 
 const colDefs: ColDef<ICar>[] = [
-  { field: "make" },
+  {
+    field: "make",
+    editable: true,
+    cellEditor: SelectCellEditor,
+    cellEditorParams: {
+      options: ["Tesla", "Toyota", "Ford"],
+    },
+  },
   { field: "model" },
   {
     field: "price",

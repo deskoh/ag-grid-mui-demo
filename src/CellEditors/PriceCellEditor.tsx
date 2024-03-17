@@ -1,5 +1,7 @@
-import { CustomCellEditorProps } from "ag-grid-react";
 import { memo, useRef, useEffect, useCallback } from "react";
+import { CustomCellEditorProps, useGridCellEditor } from "ag-grid-react";
+
+import { ICar } from "../interface";
 
 const allowedKeys = [
   "Backspace",
@@ -39,25 +41,37 @@ const onKeyDownListener: React.KeyboardEventHandler = (event) => {
   }
 };
 
-const PriceCellEditor: React.FC<CustomCellEditorProps> = memo(
+const PriceCellEditor: React.FC<CustomCellEditorProps<ICar, number>> = memo(
   ({ onValueChange, value }) => {
     const refInput = useRef<HTMLInputElement>(null);
 
     const onChangeListener: React.ChangeEventHandler<HTMLInputElement> =
       useCallback(
-        (event) =>
+        (event) => {
           onValueChange(
-            event.target.value === "" ? "" : parseInt(event.target.value, 10),
-          ),
+            event.target.value === "" ? null : parseInt(event.target.value, 10),
+          );
+        },
         [onValueChange],
       );
 
     useEffect(() => refInput.current?.focus(), []);
 
+    // Gets called once when editing is finished (eg if Enter is pressed).
+    // If you return true, then the result of the edit will be ignored.
+    const isCancelAfterEnd = useCallback(() => {
+      // Do not allow empty value
+      return value === null;
+    }, [value]);
+
+    useGridCellEditor({
+      isCancelAfterEnd,
+    });
+
     return (
       <input
         onKeyDown={onKeyDownListener}
-        value={value}
+        value={value ?? ""}
         onChange={onChangeListener}
         ref={refInput}
       />
