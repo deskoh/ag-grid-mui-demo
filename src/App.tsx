@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { ColDef } from "ag-grid-community";
+import {
+  ModuleRegistry,
+  ClientSideRowModelModule,
+  ValidationModule,
+  CustomEditorModule,
+  ColDef,
+  themeBalham,
+} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react"; // AG Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 import PriceCellRenderer from "./CellRenderers/PriceCellRenderer";
 import PriceCellEditor from "./CellEditors/PriceCellEditor";
+
+ModuleRegistry.registerModules([
+  ClientSideRowModelModule,
+  ValidationModule,
+  CustomEditorModule,
+]);
 
 interface ICar {
   make: string;
@@ -36,12 +47,8 @@ const GridExample = () => {
 
   return (
     // wrapping container with theme & size
-    <div className="ag-theme-quartz" style={{ height: 500 }}>
-      <AgGridReact
-        rowData={rowData}
-        columnDefs={colDefs}
-        reactiveCustomComponents
-      />
+    <div style={{ height: 500 }}>
+      <AgGridReact theme={themeBalham} rowData={rowData} columnDefs={colDefs} />
     </div>
   );
 };
